@@ -20,7 +20,7 @@
     +----+----------+
     ```
 0. 设为auto_increment的列必须为Integer Types，包括TINYINT，SMALLINT，MEDIUMINT，INT，BIGINT
-0. 设为auto_increment 的列必须为index 或 multiple-column index 第一个值，对于MyISAM表则可以不为multiple-column index第一个，这样自增的时候会依据multiple-column
+0. 设为auto_increment 的列必须为index 或 multiple-column index 第一个值，对于MyISAM表则可以不为multiple-column index第一个，这样自增的时候生成的值会依据multiple-column中其它列
     ```
     mysql> create table t1(k1_0 varchar(22), k1_1 bigint auto_increment, c2 varchar(22), key `idx_k1` (k1_0, k1_1)) engine = 'MyISAM';
     mysql> insert into t1 values('group1', null, 'nothing'), ('group1', null, 'nothing'), ('group1', null, 'nothing'), ('group2', null, 'nothing');
