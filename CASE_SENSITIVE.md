@@ -53,31 +53,7 @@
     
 0. 库名/表名：
     
-    mysql每一个database都与mysql的data目录下的一个文件夹对应，而table则与database对应文件夹下的文件对应，如：windows操作系统下的akira数据库下有三个表cx, rn, test_auto_incr
-    ```
-    mysql> use akira;
-    Database changed
-    mysql> show tables;
-    +-----------------+
-    | Tables_in_akira |
-    +-----------------+
-    | cx              |
-    | rn              |
-    | test_auto_incr  |
-    +-----------------+
-    ```
-    在winodws下的目录为：
-			
-    因此**database, table名的大小写敏感性与操作系统有关：**
-    ```
-    mysql> select * from Akira.Test_auto_incr;
-    +----+----------+
-    | id | username |
-    +----+----------+
-    |  1 | allen    |
-    |  2 | abc      |
-    +----+----------+
-    ```
+    mysql每一个database都与mysql的data目录下的一个文件夹对应，而table则与database对应文件夹下的文件对应，因此**database, table名的大小写敏感性与操作系统有关：**
     但是**如果设置参数：lower_case_table_names=1，这样创建database, table时会自动转为小写，并且在查询语句里的database, table名也会转成小写**，这样也就和不区分大小写效果类似了（因为全是小写）
     例如在windows操作系统下：
     ```
@@ -88,6 +64,14 @@
     | lower_case_table_names | 1     |
     +------------------------+-------+
     
+    mysql> select * from Akira.Test_auto_incr;
+    +----+----------+
+    | id | username |
+    +----+----------+
+    |  1 | allen    |
+    |  2 | abc      |
+    +----+----------+
+        
     mysql> create table ABC(id int);
     mysql> show tables;
     +-----------------+
