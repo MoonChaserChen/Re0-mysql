@@ -5,7 +5,7 @@
     mysql> create table t1 (k1 bigint auto_increment, k2 bigint auto_increment, key `idx_k1` (k1), key `idx_k2` (k2));
     ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
     ```
-0. 插入值时指定为0或不指定进行自增，若列设置为not null，则还可以指定为null进行自增
+0. 插入值时指定为0、NULL或不指定进行自增
     ```
     mysql> create table t1(k1 bigint not null auto_increment, c1 varchar(22), primary key (k1));
     mysql> insert into t1 (c1) values ('nothings');
