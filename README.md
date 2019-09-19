@@ -5,4 +5,4 @@
 1. [自增 AUTO_INCREMENT](/AUTO_INCREMENT.md)
 1. [大小写敏感性](/CASE_SENSITIVE.md)
 1. [COUNT与BIT_COUNT](/BIT_COUNT.md)
-1. [数值类型 DATA TYPE](/data_types/overview.md)
+1. [数据类型 DATA TYPE](/data_types/overview.md)
