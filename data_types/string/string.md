@@ -8,4 +8,4 @@
 
 其它总结、疑惑、猜想：
 1. [关于VARCHAR(M)占用空间大小的猜想及疑惑](/data_types/string/conclude/关于VARCHAR(M)占用空间大小的猜想及疑惑.md)
-1. [字符类型空间占用](/data_types/string/conclude/字符类型空间占用.md)
+2. [字符类型空间占用](/data_types/string/conclude/字符类型空间占用.md)
