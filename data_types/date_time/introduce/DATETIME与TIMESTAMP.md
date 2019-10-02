@@ -30,10 +30,44 @@ DATETIME与TIMESTAMP均是MYSQL中可以表示**日期+时间**的数据类型�
     ```
     
     在设置时区以前默认是：中国时间，GMT+8，也就是'+08:00'，当修改为'+05:00'后DATETIME的值并未改变，但是TIMESTAMP减小了3个小时
-
-3. 月日为零
-4. NOT NULL/NULL
-5. DEFAULT
-6. 存储及空间占用
-7. 自动初始化(auto-initialized)及自动更新(auto-update)
     
+3. 月日为零
+
+    DATETIME支持月日为零，TIMESTAMP不支持（0000-00-00除外）。
+    ```
+    mysql> create table t1(c1 datetime, c2 timestamp);
+    mysql> insert into t1 value('2019-09-00', '2019-10-00');
+    ERROR 1292 (22007): Incorrect datetime value: '2019-10-00' for column 'c2' at row 1
+    ```
+    其相关设置参见[NO_ZERO_IN_DATE](/data_types/date_time/introduce/时间类型相关设置.md#NO_ZERO_IN_DATE)
+    
+4. NOT NULL/NULL 与 DEFAULT
+
+    DATETIME默认NULL（允许NULL值），且其默认值为NULL。
+    其结果为：
+    ```
+    mysql> create table t1(c1 datetime);
+    mysql> show create table t1;
+    CREATE TABLE `t1` (
+       `c1` datetime DEFAULT NULL
+     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    ```
+    默认情况下（explicit_defaults_for_timestamp=OFF），TIMESTAMP类型自带NOT NULL
+    ```
+    mysql> create table t1(c1 timestamp);
+    mysql> show create table t1;
+    CREATE TABLE `t1` (
+       `c1` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    ```
+    其相关设置参见[explicit_defaults_for_timestamp](/data_types/date_time/introduce/时间类型相关设置.md#explicit_defaults_for_timestamp)
+
+5. 存储及空间占用
+
+    TIMESTAMP使用4bytes来存储1970年以来的秒，外加0-3bytes来存储秒的精度。
+    DATETIME使用5bytes来存储年月日时分秒，外加0-3bytes来存储秒的精度。
+    详见[时间类型的底层存储](/data_types/date_time/introduce/时间类型的底层存储.md)
+    
+6. 自动初始化(auto-initialized)及自动更新(auto-update)
+
+    默认情况下（explicit_defaults_for_timestamp=OFF），TIMESTAMP类型自带DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP。
