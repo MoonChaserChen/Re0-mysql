@@ -70,4 +70,26 @@ DATETIME与TIMESTAMP均是MYSQL中可以表示**日期+时间**的数据类型�
     
 6. 自动初始化(auto-initialized)及自动更新(auto-update)
 
+    自动初始化(auto-initialized)：在插入数据时没有指明字段值时，默认赋予值。
+    自动更新(auto-update)：在没有明确修改字段值，但是却修改了其它列值关导致了值的改变时，默认赋予值。
     默认情况下（explicit_defaults_for_timestamp=OFF），TIMESTAMP类型自带DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP。
+    ```
+    mysql> create table t1(c1 varchar(22), c2 timestamp);
+    mysql> insert into t1 (c1) value('abc');
+    mysql> select * from t1;
+    +------+---------------------+
+    | c1   | c2                  |
+    +------+---------------------+
+    | abc  | 2019-10-03 11:13:30 |
+    +------+---------------------+
+    
+    mysql> update t1 set c1 = 'def';
+    mysql> select * from t1;
+    +------+---------------------+
+    | c1   | c2                  |
+    +------+---------------------+
+    | def  | 2019-10-03 11:15:05 |
+    +------+---------------------+
+    ```
+    上面创建表时，TIMESTAMP类型的c2自带DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP（可通过show create table t1查看）。
+    在插入数据时不指明c2的值，自动设置当前时间（DEFAULT CURRENT_TIMESTAMP）。在修改数据时，只修改c1的值，c2也自动更新为当前时间（ON UPDATE CURRENT_TIMESTAMP）
