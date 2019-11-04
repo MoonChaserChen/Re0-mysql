@@ -1,2 +1,2 @@
 * [compare](compare/)
-* [data_types](data_types/guide)
+* [data_types](data_types)
