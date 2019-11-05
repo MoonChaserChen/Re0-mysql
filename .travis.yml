@@ -1,7 +1,6 @@
 language: python
 branch:
   only:
-  - master
   - gh-pages
 script: python gen_sidebar.py
 deploy:
