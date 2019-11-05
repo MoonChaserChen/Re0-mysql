@@ -39,7 +39,7 @@ DATETIME与TIMESTAMP均是MYSQL中可以表示**日期+时间**的数据类型�
     mysql> insert into t1 value('2019-09-00', '2019-10-00');
     ERROR 1292 (22007): Incorrect datetime value: '2019-10-00' for column 'c2' at row 1
     ```
-    其相关设置参见[NO_ZERO_IN_DATE](/数据类型/时间/时间类型相关设置.md#NO_ZERO_IN_DATE)
+    其相关设置参见[NO_ZERO_IN_DATE](/数据类型/时间类型/时间类型相关设置.md#NO_ZERO_IN_DATE)
     
 4. NOT NULL/NULL 与 DEFAULT
 
@@ -60,13 +60,13 @@ DATETIME与TIMESTAMP均是MYSQL中可以表示**日期+时间**的数据类型�
        `c1` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
      ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
     ```
-    其相关设置参见[explicit_defaults_for_timestamp](/数据类型/时间/时间类型相关设置.md#explicit_defaults_for_timestamp)
+    其相关设置参见[explicit_defaults_for_timestamp](/数据类型/时间类型/时间类型相关设置.md#explicit_defaults_for_timestamp)
 
 5. 存储及空间占用
 
     TIMESTAMP使用4bytes来存储1970年以来的秒，外加0-3bytes来存储秒的精度。
     DATETIME使用5bytes来存储年月日时分秒，外加0-3bytes来存储秒的精度。
-    详见[时间类型的底层存储](/数据类型/时间/时间类型的底层存储.md)
+    详见[时间类型的底层存储](/数据类型/时间类型/时间类型的底层存储.md)
     
 6. 自动初始化(auto-initialized)及自动更新(auto-update)
 
