@@ -2,13 +2,14 @@ import os
 
 suffix = ".md"
 gen_file = "_sidebar.md"
+ignore_folders = [".git"]
 
 
 def print_file(c_dir, depth, write2):
     for f in os.listdir(c_dir):
         re_f = os.path.join(c_dir, f)
         is_d = os.path.isdir(re_f)
-        if(is_d):
+        if(is_d and f not in ignore_folders):
             write2.write("\t" * depth + "- " + f + "\n")
             print_file(re_f, depth + 1, write2)
         else:
