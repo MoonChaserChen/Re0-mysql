@@ -1,0 +1,11 @@
+language: python
+branch:
+  only:
+  - gh-pages
+script: python gen_sidebar.py
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  on:
+    branch: master

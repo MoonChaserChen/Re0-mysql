@@ -8,7 +8,12 @@
     mysql> insert into t1 value('陈');
     ERROR 1406 (22001): Data too long for column 'c1' at row 1
     ```
-2. binary的列若值长度不足，则会使用0x00填充（相对于char的空格），并且在检索时填充不会被去掉（char在检索时会被去掉）
+2. BINARY与CHAR一样，最大指定长度为255（但这里单位为byte，参看第1条）
+    ```
+    mysql> create table t1(c1 binary(256));
+    ERROR 1074 (42000): Column length too big for column 'c1' (max = 255); use BLOB or TEXT instead
+    ```
+3. binary的列若值长度不足，则会使用0x00填充（相对于char的空格），并且在检索时填充不会被去掉（char在检索时会被去掉）
     ```
     mysql> create table t1(c1 char(3), c2 binary(3));
     mysql> insert into t1 values('a1', 'a'), ('a2', 'a ');
@@ -29,7 +34,7 @@
     | a2   | a    |
     +------+------+
     ```
-3. 同样对于BINARY类型列若加上唯一约束，则只有尾部\0不同的两个值也会产生冲突。对于VARBINARY类型列则不会产生冲突。
+4. 同样对于BINARY类型列若加上唯一约束，则只有尾部\0不同的两个值也会产生冲突。对于VARBINARY类型列则不会产生冲突。
     ```
     mysql> create table t1 (c1 binary(3), unique key `uqe_c1` (c1));
     mysql> insert into t1 value('a');
