@@ -7,7 +7,8 @@
 ## 非leftmost也能走索引？
 但实际上我遇到了不对索引的leftmost进行查询时也走了索引，记录如下：
 ```
-create table t1(k1 varchar(22), k2_p1 varchar(22), k2_p2 varchar(22), primary key (k1), index `idx_k2_k3` (k2_p1, k2_p2));
+drop table if exists t1;
+create table t1(k1 varchar(22), k2_p1 varchar(22), k2_p2 varchar(22), primary key (k1), index `idx_k2` (k2_p1, k2_p2));
 
 insert into t1 values
 ('defreeze', 'unscalloped', 'dishwiping'),
@@ -41,7 +42,41 @@ mysql> explain select * from t1 where  k2_p2 = 'heatingly';
 +----+-------------+-------+------------+-------+---------------+-----------+---------+------+------+----------+--------------------------+
 | id | select_type | table | partitions | type  | possible_keys | key       | key_len | ref  | rows | filtered | Extra                    |
 +----+-------------+-------+------------+-------+---------------+-----------+---------+------+------+----------+--------------------------+
-|  1 | SIMPLE      | t1    | NULL       | index | NULL          | idx_k2_k3 | 138     | NULL |   21 |    10.00 | Using where; Using index |
+|  1 | SIMPLE      | t1    | NULL       | index | NULL          | idx_k2    | 138     | NULL |   21 |    10.00 | Using where; Using index |
 +----+-------------+-------+------------+-------+---------------+-----------+---------+------+------+----------+--------------------------+
 ```
 可以看到这里虽然没有possible_keys，但是有key，也就是走了索引的。
+
+同时根据[官方文档](https://dev.mysql.com/doc/refman/5.7/en/multiple-column-indexes.html) 对于下面的表来说：
+```
+DROP table if exists test;
+CREATE TABLE test (
+    id         INT NOT NULL,
+    last_name  CHAR(30) NOT NULL,
+    first_name CHAR(30) NOT NULL,
+    PRIMARY KEY (id),
+    INDEX name (last_name,first_name)
+);
+```
+下面的语句是不会走索引的：
+```
+explain SELECT * FROM test WHERE first_name='John';
+explain SELECT * FROM test WHERE last_name='Jones' OR first_name='John';
+```
+但结果却是：
+```
+mysql> explain SELECT * FROM test WHERE first_name='John';
++----+-------------+-------+------------+-------+---------------+------+---------+------+------+----------+--------------------------+
+| id | select_type | table | partitions | type  | possible_keys | key  | key_len | ref  | rows | filtered | Extra                    |
++----+-------------+-------+------------+-------+---------------+------+---------+------+------+----------+--------------------------+
+|  1 | SIMPLE      | test  | NULL       | index | NULL          | name | 180     | NULL |    1 |   100.00 | Using where; Using index |
++----+-------------+-------+------------+-------+---------------+------+---------+------+------+----------+--------------------------+
+
+mysql> explain SELECT * FROM test WHERE last_name='Jones' OR first_name='John';
++----+-------------+-------+------------+-------+---------------+------+---------+------+------+----------+--------------------------+
+| id | select_type | table | partitions | type  | possible_keys | key  | key_len | ref  | rows | filtered | Extra                    |
++----+-------------+-------+------------+-------+---------------+------+---------+------+------+----------+--------------------------+
+|  1 | SIMPLE      | test  | NULL       | index | name          | name | 180     | NULL |    1 |   100.00 | Using where; Using index |
++----+-------------+-------+------------+-------+---------------+------+---------+------+------+----------+--------------------------+
+```
+确实是走了索引的。
