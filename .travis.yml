@@ -2,6 +2,7 @@ language: python
 branch:
   only:
   - gh-pages
+  - master
 script: python gen_sidebar.py
 deploy:
   provider: pages
