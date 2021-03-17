@@ -12,7 +12,7 @@ Query OK, 1 row affected (0.09 sec)
 ```dot
 digraph G {
 
-  subgraph T0 {
+  subgraph cluster_0 {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
@@ -20,7 +20,7 @@ digraph G {
     label = "事务A";
   }
 
-  subgraph T1 {
+  subgraph cluster_1 {
     node [style=filled];
     b0 -> b1 -> b2 -> b3 -> b4;
     label = "事务B";
